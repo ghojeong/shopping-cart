@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import { Link } from "react-router-dom";
 import { ProductItemModel } from "models";
 import { numWithCommas } from "lib/format";
+import { ROUTE_CART } from "routes";
 
 interface Props {
   quantity: number;
@@ -40,7 +41,7 @@ export const CartListItem: FC<Props> = ({
         >
           빼기
         </button>
-        <Link to="/cart">
+        <Link to={ROUTE_CART}>
           <i
             className="btn add-btn btn-add-cart mr-2"
             onClick={() => {
@@ -50,7 +51,7 @@ export const CartListItem: FC<Props> = ({
             +
           </i>
         </Link>
-        <Link to="/cart">
+        <Link to={ROUTE_CART}>
           <i
             className="btn add-btn btn-add-cart"
             onClick={() => {

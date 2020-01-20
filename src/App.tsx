@@ -1,17 +1,20 @@
 import React from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { Navbar } from "components";
-import { Cart, Home, Products } from "pages";
+import { Provider } from "react-redux";
+import { createStore, applyMiddleware } from "redux";
+import { createEpicMiddleware } from "redux-observable";
+import * as services from "services";
+import { rootEpic } from "epics";
+import { rootReducer } from "reducers";
+import { AppRouter } from "routes";
+
+const epicMiddleware = createEpicMiddleware({
+  dependencies: services
+});
+const store = createStore(rootReducer, applyMiddleware(epicMiddleware));
+epicMiddleware.run(rootEpic);
 
 export const App = () => (
-  <BrowserRouter>
-    <div className="App">
-      <Navbar />
-      <Switch>
-        <Route exact path="/" component={Home} />
-        <Route exact path="/products" component={Products} />
-        <Route path="/cart" component={Cart} />
-      </Switch>
-    </div>
-  </BrowserRouter>
+  <Provider store={store}>
+    <AppRouter />
+  </Provider>
 );
