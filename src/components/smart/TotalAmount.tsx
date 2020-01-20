@@ -11,14 +11,16 @@ interface Props {
 export const TotalAmount: FC<Props> = ({ totalPrice }) => {
   const dispatch = useDispatch();
   const { coupons } = useSelector(couponsSelector());
-  const checkedCoupons: Record<string, boolean> = {};
   const [calculatedPrice, setCalculatedPrice] = useState(totalPrice);
+  const [checkedCoupons, setCheckedCoupons] = useState<Record<string, boolean>>(
+    {}
+  );
 
   useEffect(() => {
     dispatch(fetchCouponsAsync.request());
   }, [dispatch]);
 
-  const calcTotalPrice = () => {
+  useEffect(() => {
     let price = totalPrice;
     for (const key in coupons) {
       if (checkedCoupons[String(key)]) {
@@ -36,15 +38,14 @@ export const TotalAmount: FC<Props> = ({ totalPrice }) => {
       }
     }
     setCalculatedPrice(price);
-  };
+  }, [checkedCoupons, coupons, totalPrice]);
 
   const handleCouponCheckChangeFactory = (couponKey: string) => e => {
     if (e.target.checked) {
-      checkedCoupons[couponKey] = true;
+      setCheckedCoupons({ ...checkedCoupons, [couponKey]: true });
     } else {
-      checkedCoupons[couponKey] = false;
+      setCheckedCoupons({ ...checkedCoupons, [couponKey]: false });
     }
-    calcTotalPrice();
   };
 
   const CouponCheckboxList = Object.keys(coupons).map(key => {
