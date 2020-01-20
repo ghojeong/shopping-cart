@@ -1,10 +1,21 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCouponsAsync } from "actions";
+import { couponsSelector } from "selectors";
+import { CouponCheckBoxListItem } from "components";
 import { numWithCommas } from "lib/format";
 
 interface Props {
   totalPrice: number;
 }
 export const TotalAmount: FC<Props> = ({ totalPrice }) => {
+  const dispatch = useDispatch();
+  const { coupons } = useSelector(couponsSelector());
+
+  useEffect(() => {
+    dispatch(fetchCouponsAsync.request());
+  }, [dispatch]);
+
   const handleChecked = e => {
     if (e.target.checked) {
       alert("checked");
@@ -13,19 +24,22 @@ export const TotalAmount: FC<Props> = ({ totalPrice }) => {
     }
   };
 
+  const CouponCheckboxList = Object.keys(coupons).map(key => {
+    const coupon = coupons[key];
+    return (
+      <CouponCheckBoxListItem
+        key={coupon.title}
+        coupon={coupon}
+        onCheckChange={handleChecked}
+      />
+    );
+  });
+
   return (
     <div className="container">
       <div className="row">
         <div className="card p-3 w-100">
-          <div className="input-group d-flex align-items-center">
-            <input
-              id="productCheckbox"
-              type="checkbox"
-              onChange={handleChecked}
-              aria-label="checkbox"
-            />
-            <span className="flex-fill ml-3">쿠폰 적용</span>
-          </div>
+          {CouponCheckboxList}
           <div className="Total-price w-100 mt-3 border-top py-3">
             <b>총 가격: {numWithCommas(totalPrice)} 원</b>
           </div>

@@ -2,22 +2,19 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchProductItemsAsync,
-  fetchCouponsAsync,
   removeItemFromCart,
   addQuantity,
   subQuantity
 } from "actions";
-import { couponsSelector, cartSelector } from "selectors";
+import { cartSelector } from "selectors";
 import { TotalAmount, CartListItem } from "components";
 
 export const Cart = () => {
   const dispatch = useDispatch();
-  const { coupons } = useSelector(couponsSelector());
   const { itemsWithQuantity, cartItemsNum } = useSelector(cartSelector());
 
   useEffect(() => {
     dispatch(fetchProductItemsAsync.request());
-    dispatch(fetchCouponsAsync.request());
   }, [dispatch]);
 
   const handleRemove = (id: string) => {
