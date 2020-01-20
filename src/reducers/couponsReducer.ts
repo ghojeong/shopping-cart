@@ -21,10 +21,8 @@ export const couponsReducer = (
       return couponsInitialState;
     case getType(fetchCouponsAsync.request):
       return {
-        ...couponsState,
-        isLoading: true,
-        errMsg: "",
-        coupons: []
+        ...couponsInitialState,
+        isLoading: true
       };
     case getType(fetchCouponsAsync.success):
       return {
