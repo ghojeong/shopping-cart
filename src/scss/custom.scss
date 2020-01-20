@@ -1,0 +1,155 @@
+$main-color: #2196f3;
+$light-text: #abb0be;
+
+@import url(https://fonts.googleapis.com/css?family=Lato:300, 400, 700);
+
+@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css);
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+body {
+  font: 14px/22px "Lato", Arial, sans-serif;
+  background: #6394f8;
+}
+
+.app {
+  -webkit-display: flex;
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.lighter-text {
+  color: #abb0be;
+}
+
+.main-color-text {
+  color: $main-color;
+}
+
+nav {
+  background-color: #0275d8;
+  font-size: 16px;
+  height: 60px;
+  width: 100%;
+}
+
+.nav-container {
+  position: relative;
+  height: 100%;
+  padding: 0 !important;
+}
+
+.nav-menu-list-wrapper {
+  height: 100%;
+  margin: 0;
+}
+
+.left-menu-list {
+  list-style: none;
+  padding: 0 10px;
+}
+
+.nav-link,
+.nav-link:hover {
+  color: white;
+}
+
+.nav-menu-list-wrapper .nav-link:hover,
+.nav-menu-list-wrapper .nav-link:active {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.badge {
+  background-color: #ffffff;
+  border-radius: 10px;
+  color: black;
+  display: inline-block;
+  font-size: 12px;
+  line-height: 1;
+  padding: 3px 7px;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.product-card {
+  width: 100%;
+  flex-direction: row !important;
+  margin: 10px;
+  padding: 10px;
+}
+
+.product-card img {
+  width: 200px;
+  height: 150px;
+}
+
+.product-card .card-img-left {
+  -webkit-display: flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.product-card .card-right {
+  text-align: right;
+}
+
+.product-card .add-remove .btn-remove {
+  margin-right: 100px;
+  background: #d9534f !important;
+}
+
+.btn-add-cart {
+  background: #2196f3 !important;
+  color: #ffffff !important;
+}
+
+.cart-warpper {
+  width: 100%;
+}
+
+.cart-warpper .card {
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  min-width: 100%;
+}
+
+.cart-icon {
+  color: #515783;
+  font-size: 24px;
+  margin-right: 7px;
+  float: left;
+}
+
+.button {
+  background: $main-color;
+  color: white;
+  text-align: center;
+  padding: 12px;
+  text-decoration: none;
+  display: block;
+  border-radius: 3px;
+  font-size: 16px;
+  margin: 25px 0 15px 0;
+
+  &:hover {
+    background: lighten($main-color, 3%);
+  }
+}
+
+.clearfix:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+@import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
