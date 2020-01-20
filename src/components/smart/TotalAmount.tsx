@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCouponsAsync } from "actions";
 import { couponsSelector } from "selectors";
@@ -12,7 +12,7 @@ export const TotalAmount: FC<Props> = ({ totalPrice }) => {
   const dispatch = useDispatch();
   const { coupons } = useSelector(couponsSelector());
   const checkedCoupons: Record<string, boolean> = {};
-  let calculatedPrice = totalPrice;
+  const [calculatedPrice, setCalculatedPrice] = useState(totalPrice);
 
   useEffect(() => {
     dispatch(fetchCouponsAsync.request());
@@ -30,12 +30,12 @@ export const TotalAmount: FC<Props> = ({ totalPrice }) => {
           price -= discountAmount;
         }
         if (price < 0) {
-          calculatedPrice = 0;
+          setCalculatedPrice(0);
           return;
         }
       }
     }
-    calculatedPrice = price;
+    setCalculatedPrice(price);
   };
 
   const handleCouponCheckChangeFactory = (couponKey: string) => e => {
