@@ -12,4 +12,4 @@ export const fetchProductItemsAsync = createAsyncAction(
     errMsg: string;
   }
 >();
-export type ProductItemsAction = ActionType<typeof fetchProductItemsAsync>;
+export type ProductItemsActions = ActionType<typeof fetchProductItemsAsync>;

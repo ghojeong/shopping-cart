@@ -12,4 +12,4 @@ export const fetchCouponsAsync = createAsyncAction(
     errMsg: string;
   }
 >();
-export type CouponsAction = ActionType<typeof fetchCouponsAsync>;
+export type CouponsActions = ActionType<typeof fetchCouponsAsync>;
