@@ -7,7 +7,7 @@ import {
   subQuantity
 } from "actions";
 import { cartSelector } from "selectors";
-import { TotalAmount, CartListItem } from "components";
+import { CartTotal, CartListItem } from "components";
 
 export const Cart = () => {
   const dispatch = useDispatch();
@@ -57,7 +57,7 @@ export const Cart = () => {
         <h3 className="text-left">장바구니</h3>
         {CartList}
       </div>
-      <TotalAmount totalPrice={totalPrice} />
+      <CartTotal totalPrice={totalPrice} />
     </div>
   );
 };

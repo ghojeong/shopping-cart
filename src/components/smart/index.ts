@@ -1,2 +1,2 @@
 export * from "./Navbar";
-export * from "./TotalAmount";
+export * from "./CartTotal";

@@ -8,7 +8,7 @@ import { numWithCommas } from "lib/format";
 interface Props {
   totalPrice: number;
 }
-export const TotalAmount: FC<Props> = ({ totalPrice }) => {
+export const CartTotal: FC<Props> = ({ totalPrice }) => {
   const dispatch = useDispatch();
   const { coupons } = useSelector(couponsSelector());
   const [calculatedPrice, setCalculatedPrice] = useState(totalPrice);
