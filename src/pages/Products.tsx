@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProductItemsAsync, addItemToCart } from "actions";
+import { fetchProductItemsAsync } from "actions";
 import { productItemsWithOrderSelector } from "selectors";
 import { ProductListItem } from "components";
 
@@ -12,15 +12,9 @@ export const Products = () => {
     dispatch(fetchProductItemsAsync.request());
   }, [dispatch]);
 
-  const handleAddCart = (id: string) => {
-    dispatch(addItemToCart({ id }));
-  };
-
   const ProductList = Object.keys(items).map(key => {
     const item = items[key];
-    return (
-      <ProductListItem key={item.id} item={item} onAddCart={handleAddCart} />
-    );
+    return <ProductListItem key={item.id} item={item} />;
   });
 
   return (

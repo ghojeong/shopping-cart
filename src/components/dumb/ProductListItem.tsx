@@ -1,12 +1,12 @@
 import React, { FC } from "react";
 import { ProductItemModel } from "models";
+import { AddRemoveButton } from "components";
 import { numWithCommas } from "lib/format";
 
 interface Props {
   item: ProductItemModel;
-  onAddCart: (id: string) => void;
 }
-export const ProductListItem: FC<Props> = ({ item, onAddCart }) => (
+export const ProductListItem: FC<Props> = ({ item }) => (
   <div className="card product-card flex-fill" key={item.id}>
     <div className="card-img-left">
       <img src={item.coverImage} alt={"N/A"} />
@@ -17,15 +17,7 @@ export const ProductListItem: FC<Props> = ({ item, onAddCart }) => (
       <p>
         <b>가격: {numWithCommas(item.price)} 원</b>
       </p>
-      <button
-        type="button"
-        className="btn btn-add-cart"
-        onClick={() => {
-          onAddCart(item.id);
-        }}
-      >
-        <i className="material-icons">담기</i>
-      </button>
+      <AddRemoveButton id={item.id} />
     </div>
   </div>
 );

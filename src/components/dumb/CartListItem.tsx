@@ -42,24 +42,24 @@ export const CartListItem: FC<Props> = ({
           빼기
         </button>
         <Link to={ROUTE_CART}>
-          <i
+          <p
             className="btn add-btn btn-add-cart mr-2"
             onClick={() => {
               onAddQuantity(item.id);
             }}
           >
             +
-          </i>
+          </p>
         </Link>
         <Link to={ROUTE_CART}>
-          <i
+          <p
             className="btn add-btn btn-add-cart"
             onClick={() => {
               onSubQuantity(item.id);
             }}
           >
             -
-          </i>
+          </p>
         </Link>
       </div>
     </div>
