@@ -64,12 +64,12 @@ export const CartTotal: FC<Props> = ({ totalPrice }) => {
       <div className="row">
         <div className="card p-3 w-100">
           {isLoading ? <Spinner /> : CouponCheckboxList}
-          <div className="Total-price w-100 mt-3 border-top py-3">
+          <div className="total-price w-100 mt-3 border-top py-3">
             <b>총 가격: {numWithCommas(calculatedPrice)} 원</b>
           </div>
         </div>
       </div>
-      <div className="checkout my-3 ">
+      <div className="submit my-3 ">
         <button
           className="btn btn-add-cart"
           disabled={isLoading || calculatedPrice <= 0}
