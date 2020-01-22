@@ -24,23 +24,24 @@ export const CartListItem: FC<Props> = ({
     </div>
 
     <div className="card-body card-right">
-      <span className="title">{item.title}</span>
       <p>
-        <b>가격: {numWithCommas(item.price)}원</b>
-      </p>
-      <p>
-        <b>수량: {quantity}</b>
-      </p>
-      <div className="add-remove">
         <button
           type="button"
-          className="btn btn-add-cart btn-remove"
           onClick={() => {
             onRemove(item.id);
           }}
         >
-          빼기
+          <div>&times;</div>
         </button>
+      </p>
+      <div className="title">{item.title}</div>
+      <div>
+        <b>가격: {numWithCommas(item.price)}원</b>
+      </div>
+      <p>
+        <b>수량: {quantity}</b>
+      </p>
+      <div className="add-remove">
         <Link to={ROUTE_CART}>
           <p
             className="btn add-btn btn-add-cart mr-2"
