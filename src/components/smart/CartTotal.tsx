@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCouponsAsync } from "actions";
 import { couponsSelector } from "selectors";
-import { CouponCheckBoxListItem } from "components";
+import { CouponCheckBoxListItem, Spinner } from "components";
 import { numWithCommas } from "lib/format";
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 }
 export const CartTotal: FC<Props> = ({ totalPrice }) => {
   const dispatch = useDispatch();
-  const { coupons } = useSelector(couponsSelector());
+  const { coupons, isLoading } = useSelector(couponsSelector());
   const [calculatedPrice, setCalculatedPrice] = useState(totalPrice);
   const [checkedCoupons, setCheckedCoupons] = useState<Record<string, boolean>>(
     {}
@@ -63,7 +63,7 @@ export const CartTotal: FC<Props> = ({ totalPrice }) => {
     <div className="container">
       <div className="row">
         <div className="card p-3 w-100">
-          {CouponCheckboxList}
+          {isLoading ? <Spinner /> : CouponCheckboxList}
           <div className="Total-price w-100 mt-3 border-top py-3">
             <b>총 가격: {numWithCommas(calculatedPrice)} 원</b>
           </div>

@@ -5,8 +5,10 @@ import { CouponModel } from "models";
 export const couponService = {
   getCoupons(): Observable<CouponModel[]> {
     return new Observable((subscriber: Subscriber<CouponModel[]>) => {
-      subscriber.next(coupons);
-      subscriber.complete();
+      setTimeout(() => {
+        subscriber.next(coupons);
+        subscriber.complete();
+      }, 500);
     });
   }
 };

@@ -5,8 +5,10 @@ import { ProductItemModel } from "models";
 export const productItemsService = {
   getProductItems(): Observable<ProductItemModel[]> {
     return new Observable((subscriber: Subscriber<ProductItemModel[]>) => {
-      subscriber.next(productItems);
-      subscriber.complete();
+      setTimeout(() => {
+        subscriber.next(productItems);
+        subscriber.complete();
+      }, 1000);
     });
   }
 };

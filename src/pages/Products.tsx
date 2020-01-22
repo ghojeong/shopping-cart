@@ -2,11 +2,11 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProductItemsAsync } from "actions";
 import { productItemsWithOrderSelector } from "selectors";
-import { ProductListItem } from "components";
+import { ProductListItem, Spinner } from "components";
 
 export const Products = () => {
   const dispatch = useDispatch();
-  const { items } = useSelector(productItemsWithOrderSelector());
+  const { items, isLoading } = useSelector(productItemsWithOrderSelector());
 
   useEffect(() => {
     dispatch(fetchProductItemsAsync.request());
@@ -20,7 +20,9 @@ export const Products = () => {
   return (
     <div className="container py-4 mt-5">
       <h3 className="text-left">상품</h3>
-      <div className="d-flex flex-wrap">{ProductList}</div>
+      <div className="d-flex flex-wrap">
+        {isLoading ? <Spinner /> : ProductList}
+      </div>
     </div>
   );
 };
