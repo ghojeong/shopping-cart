@@ -70,7 +70,12 @@ export const CartTotal: FC<Props> = ({ totalPrice }) => {
         </div>
       </div>
       <div className="checkout my-3 ">
-        <button className="btn btn-add-cart">주문</button>
+        <button
+          className="btn btn-add-cart"
+          disabled={isLoading || calculatedPrice <= 0}
+        >
+          주문
+        </button>
       </div>
     </div>
   );
