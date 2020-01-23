@@ -1,20 +1,36 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCouponsAsync } from "actions";
-import { couponsSelector } from "selectors";
+import { couponsSelector, cartSelector } from "selectors";
 import { CouponCheckBoxListItem, Spinner } from "components";
 import { numWithCommas } from "lib/format";
 
-interface Props {
-  totalPrice: number;
-}
-export const CartTotal: FC<Props> = ({ totalPrice }) => {
+export const CartTotal = () => {
   const dispatch = useDispatch();
   const { coupons, isLoading } = useSelector(couponsSelector());
-  const [calculatedPrice, setCalculatedPrice] = useState(totalPrice);
+  const { cartItems } = useSelector(cartSelector());
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [calculatedPrice, setCalculatedPrice] = useState(0);
   const [checkedCoupons, setCheckedCoupons] = useState<Record<string, boolean>>(
     {}
   );
+  const [
+    hasCouponUnavailableItemsOnly,
+    setHasCouponUnavailableItemsOnly
+  ] = useState(Object.keys(cartItems).length < 1);
+
+  useEffect(() => {
+    let price = 0;
+    let hasCouponUnavailableItem = Object.keys(cartItems).length < 1;
+    for (const key in cartItems) {
+      const { quantity, product: item } = cartItems[key];
+      price += quantity * item.price;
+      hasCouponUnavailableItem =
+        hasCouponUnavailableItem && item.availableCoupon === false;
+    }
+    setTotalPrice(price);
+    setHasCouponUnavailableItemsOnly(hasCouponUnavailableItem);
+  }, [cartItems]);
 
   useEffect(() => {
     dispatch(fetchCouponsAsync.request());
@@ -63,8 +79,9 @@ export const CartTotal: FC<Props> = ({ totalPrice }) => {
     <div className="container">
       <div className="row">
         <div className="card p-3 w-100">
-          {isLoading ? <Spinner /> : CouponCheckboxList}
-          <div className="total-price w-100 mt-3 border-top py-3">
+          {!hasCouponUnavailableItemsOnly &&
+            (isLoading ? <Spinner /> : CouponCheckboxList)}
+          <div className="total-price w-100 mt-3 py-3">
             <b>총 가격: {numWithCommas(calculatedPrice)} 원</b>
           </div>
         </div>

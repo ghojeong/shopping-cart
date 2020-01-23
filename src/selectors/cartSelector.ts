@@ -1,28 +1,30 @@
 import { ProductItemModel } from "models";
 import { RootState } from "reducers";
 
-interface ItemWithQuantity {
+interface CartItem {
   product: ProductItemModel;
+  checked: boolean;
   quantity: number;
 }
-type ItemsWithQuantity = Record<ProductItemModel["id"], ItemWithQuantity>;
+type CartItems = Record<ProductItemModel["id"], CartItem>;
 interface Cart {
-  itemsWithQuantity: ItemsWithQuantity;
+  cartItems: CartItems;
   cartItemsNum: number;
 }
 export const cartSelector = () => ({
   productItems: { items },
-  cart: { cartItems, cartItemsNum }
+  cart: { cartItemsState, cartItemsNum }
 }: RootState): Cart => {
-  const itemsWithQuantity: ItemsWithQuantity = {};
-  for (let id in cartItems) {
-    itemsWithQuantity[id] = {
+  const cartItems: CartItems = {};
+  for (let id in cartItemsState) {
+    cartItems[id] = {
       product: items[id],
-      quantity: cartItems[id].quantity
+      checked: cartItemsState[id].checked,
+      quantity: cartItemsState[id].quantity
     };
   }
   return {
-    itemsWithQuantity,
+    cartItems,
     cartItemsNum
   };
 };

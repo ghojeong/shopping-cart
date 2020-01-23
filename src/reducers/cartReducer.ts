@@ -1,4 +1,5 @@
 import { getType } from "typesafe-actions";
+import mapValues from "lodash/mapValues";
 import { ProductItemModel } from "models";
 import {
   Actions,
@@ -6,20 +7,27 @@ import {
   addItemToCart,
   removeItemFromCart,
   addQuantity,
-  subQuantity
+  subQuantity,
+  checkItem,
+  uncheckItem,
+  checkAllItems,
+  uncheckAllItems
 } from "actions";
 
 export interface CartState {
-  cartItems: Record<ProductItemModel["id"], { quantity: number }>;
+  cartItemsState: Record<
+    ProductItemModel["id"],
+    { checked: boolean; quantity: number }
+  >;
   cartItemsNum: number; // 장바구니에 담긴 상품 종류의 숫자 (총개수가 아님)
 }
 export const cartInitialState: CartState = {
-  cartItems: {},
+  cartItemsState: {},
   cartItemsNum: 0
 };
 
 const hasAddedItem = (id: ProductItemModel["id"], cartState: CartState) =>
-  cartState.cartItems[id] && cartState.cartItems[id].quantity > 0;
+  cartState.cartItemsState[id] && cartState.cartItemsState[id].quantity > 0;
 
 export const cartReducer = (
   cartState = cartInitialState,
@@ -31,12 +39,13 @@ export const cartReducer = (
     case getType(addItemToCart):
       return {
         ...cartState,
-        cartItems: {
-          ...cartState.cartItems,
+        cartItemsState: {
+          ...cartState.cartItemsState,
           [action.payload.id]: {
-            ...cartState.cartItems[action.payload.id],
+            ...cartState.cartItemsState[action.payload.id],
+            checked: true,
             quantity: hasAddedItem(action.payload.id, cartState)
-              ? cartState.cartItems[action.payload.id].quantity + 1
+              ? cartState.cartItemsState[action.payload.id].quantity + 1
               : 1
           }
         },
@@ -47,10 +56,11 @@ export const cartReducer = (
     case getType(removeItemFromCart):
       return {
         ...cartState,
-        cartItems: {
-          ...cartState.cartItems,
+        cartItemsState: {
+          ...cartState.cartItemsState,
           [action.payload.id]: {
-            ...cartState.cartItems[action.payload.id],
+            ...cartState.cartItemsState[action.payload.id],
+            checked: true,
             quantity: 0
           }
         },
@@ -61,12 +71,13 @@ export const cartReducer = (
     case getType(addQuantity):
       return {
         ...cartState,
-        cartItems: {
-          ...cartState.cartItems,
+        cartItemsState: {
+          ...cartState.cartItemsState,
           [action.payload.id]: {
-            ...cartState.cartItems[action.payload.id],
+            ...cartState.cartItemsState[action.payload.id],
+            checked: true,
             quantity: hasAddedItem(action.payload.id, cartState)
-              ? cartState.cartItems[action.payload.id].quantity + 1
+              ? cartState.cartItemsState[action.payload.id].quantity + 1
               : 1
           }
         },
@@ -77,21 +88,60 @@ export const cartReducer = (
     case getType(subQuantity):
       return {
         ...cartState,
-        cartItems: {
-          ...cartState.cartItems,
+        cartItemsState: {
+          ...cartState.cartItemsState,
           [action.payload.id]: {
-            ...cartState.cartItems[action.payload.id],
+            ...cartState.cartItemsState[action.payload.id],
+            checked: true,
             quantity: hasAddedItem(action.payload.id, cartState)
-              ? cartState.cartItems[action.payload.id].quantity - 1
+              ? cartState.cartItemsState[action.payload.id].quantity - 1
               : 0
           }
         },
         cartItemsNum:
           cartState.cartItemsNum -
           (hasAddedItem(action.payload.id, cartState) &&
-          cartState.cartItems[action.payload.id].quantity <= 1
+          cartState.cartItemsState[action.payload.id].quantity <= 1
             ? 1
             : 0)
+      };
+    case getType(checkItem):
+      return {
+        ...cartState,
+        cartItemsState: {
+          ...cartState.cartItemsState,
+          [action.payload.id]: {
+            ...cartState.cartItemsState[action.payload.id],
+            checked: true
+          }
+        }
+      };
+    case getType(uncheckItem):
+      return {
+        ...cartState,
+        cartItemsState: {
+          ...cartState.cartItemsState,
+          [action.payload.id]: {
+            ...cartState.cartItemsState[action.payload.id],
+            checked: false
+          }
+        }
+      };
+    case getType(checkAllItems):
+      return {
+        ...cartState,
+        cartItemsState: mapValues(cartState.cartItemsState, cartItemState => ({
+          ...cartItemState,
+          checked: true
+        }))
+      };
+    case getType(uncheckAllItems):
+      return {
+        ...cartState,
+        cartItemsState: mapValues(cartState.cartItemsState, cartItemState => ({
+          ...cartItemState,
+          checked: false
+        }))
       };
     default:
       return cartState;

@@ -4,17 +4,19 @@ import {
   fetchProductItemsAsync,
   removeItemFromCart,
   addQuantity,
-  subQuantity
+  subQuantity,
+  checkAllItems
 } from "actions";
 import { cartSelector } from "selectors";
 import { CartTotal, CartListItem } from "components";
 
 export const Cart = () => {
   const dispatch = useDispatch();
-  const { itemsWithQuantity, cartItemsNum } = useSelector(cartSelector());
+  const { cartItems, cartItemsNum } = useSelector(cartSelector());
 
   useEffect(() => {
     dispatch(fetchProductItemsAsync.request());
+    dispatch(checkAllItems());
   }, [dispatch]);
 
   const handleRemove = (id: string) => {
@@ -27,17 +29,15 @@ export const Cart = () => {
     dispatch(subQuantity({ id }));
   };
 
-  let totalPrice = 0;
-
   const CartList =
     cartItemsNum > 0 ? (
-      Object.keys(itemsWithQuantity).map(key => {
-        const { quantity, product: item } = itemsWithQuantity[key];
-        totalPrice += quantity * item.price;
+      Object.keys(cartItems).map(key => {
+        const { checked, quantity, product: item } = cartItems[key];
         return (
           quantity > 0 && (
             <CartListItem
               key={item.id}
+              checked={checked}
               quantity={quantity}
               item={item}
               onRemove={handleRemove}
@@ -57,7 +57,7 @@ export const Cart = () => {
         <h3 className="text-left">장바구니</h3>
         {CartList}
       </div>
-      <CartTotal totalPrice={totalPrice} />
+      <CartTotal />
     </div>
   );
 };

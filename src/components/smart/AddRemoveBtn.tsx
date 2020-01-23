@@ -9,8 +9,8 @@ interface Props {
 }
 export const AddRemoveButton: FC<Props> = ({ id }) => {
   const dispatch = useDispatch();
-  const { itemsWithQuantity } = useSelector(cartSelector());
-  const item = itemsWithQuantity[id];
+  const { cartItems } = useSelector(cartSelector());
+  const item = cartItems[id];
 
   if (item && item.quantity > 0) {
     return (
