@@ -13,7 +13,8 @@ export const ProductListItem: FC<Props> = ({ item }) => (
     </div>
 
     <div className="card-body card-right">
-      <span className="card-title">{item.title}</span>
+      <div className="card-title">{item.title}</div>
+      <div>{`Score: ${item.score}`}</div>
       <p>
         <b>가격: {numWithCommas(item.price)} 원</b>
       </p>
