@@ -14,37 +14,49 @@ export const CartTotal = () => {
   const [checkedCoupons, setCheckedCoupons] = useState<Record<string, boolean>>(
     {}
   );
-  const [
-    hasCouponUnavailableItemsOnly,
-    setHasCouponUnavailableItemsOnly
-  ] = useState(Object.keys(cartItems).length < 1);
-
-  useEffect(() => {
-    let price = 0;
-    let hasCouponUnavailableItem = Object.keys(cartItems).length < 1;
-    for (const key in cartItems) {
-      const { quantity, product: item } = cartItems[key];
-      price += quantity * item.price;
-      hasCouponUnavailableItem =
-        hasCouponUnavailableItem && item.availableCoupon === false;
-    }
-    setTotalPrice(price);
-    setHasCouponUnavailableItemsOnly(hasCouponUnavailableItem);
-  }, [cartItems]);
+  const [hasCouponAvailableItem, setHasCouponAvailableItem] = useState(true);
 
   useEffect(() => {
     dispatch(fetchCouponsAsync.request());
   }, [dispatch]);
 
   useEffect(() => {
+    let price = 0;
+    let hasCouponAvailableItem = false;
+    for (const key in cartItems) {
+      const { checked, quantity, product: item } = cartItems[key];
+
+      if (checked) {
+        let calculatedItemPrice = item.price;
+        for (const key in coupons) {
+          if (checkedCoupons[String(key)]) {
+            const { discountRate } = coupons[key];
+            if (
+              discountRate &&
+              discountRate > 0 &&
+              discountRate < 100 &&
+              !(item.availableCoupon === false)
+            ) {
+              calculatedItemPrice -= item.price * discountRate * 0.01;
+            }
+          }
+        }
+        price += quantity * calculatedItemPrice;
+      }
+      if (quantity > 0 && checked && !(item.availableCoupon === false)) {
+        hasCouponAvailableItem = true;
+      }
+    }
+    setTotalPrice(price);
+    setHasCouponAvailableItem(hasCouponAvailableItem);
+  }, [cartItems, checkedCoupons, coupons]);
+
+  useEffect(() => {
     let price = totalPrice;
     for (const key in coupons) {
       if (checkedCoupons[String(key)]) {
-        const { discountRate, discountAmount } = coupons[key];
-        if (discountRate && discountRate > 0 && discountRate < 100) {
-          price -= price * discountRate * 0.01;
-        }
-        if (discountAmount && discountAmount > 0) {
+        const { discountAmount } = coupons[key];
+        if (discountAmount && discountAmount > 0 && hasCouponAvailableItem) {
           price -= discountAmount;
         }
         if (price < 0) {
@@ -54,7 +66,7 @@ export const CartTotal = () => {
       }
     }
     setCalculatedPrice(price);
-  }, [checkedCoupons, coupons, totalPrice]);
+  }, [checkedCoupons, coupons, hasCouponAvailableItem, totalPrice]);
 
   const handleCouponCheckChangeFactory = (couponKey: string) => e => {
     if (e.target.checked) {
@@ -79,9 +91,8 @@ export const CartTotal = () => {
     <div className="container">
       <div className="row">
         <div className="card p-3 w-100">
-          {!hasCouponUnavailableItemsOnly &&
-            (isLoading ? <Spinner /> : CouponCheckboxList)}
-          <div className="total-price w-100 mt-3 py-3">
+          {isLoading ? <Spinner /> : CouponCheckboxList}
+          <div className="total-price w-100 mt-3 border-top py-3">
             <b>총 가격: {numWithCommas(calculatedPrice)} 원</b>
           </div>
         </div>

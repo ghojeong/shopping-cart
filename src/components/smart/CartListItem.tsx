@@ -28,7 +28,7 @@ export const CartListItem: FC<Props> = ({
       <input
         className="checkbox"
         type="checkbox"
-        onClick={() => {
+        onChange={() => {
           const { id } = item;
           if (checked) {
             dispatch(uncheckItem({ id }));
