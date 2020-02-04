@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProductItemsAsync, checkAllItems } from "actions";
+import { fetchCouponsAsync, checkAllItems, uncheckAllCoupons } from "actions";
 import { cartSelector } from "selectors";
 import { CartTotal, CartList } from "components";
 
@@ -9,8 +9,9 @@ export const Cart = () => {
   const { cartItems, cartItemsNum } = useSelector(cartSelector());
 
   useEffect(() => {
-    dispatch(fetchProductItemsAsync.request());
+    dispatch(fetchCouponsAsync.request());
     dispatch(checkAllItems());
+    dispatch(uncheckAllCoupons());
   }, [dispatch]);
 
   return (

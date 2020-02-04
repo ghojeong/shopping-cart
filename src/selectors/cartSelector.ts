@@ -1,30 +1,58 @@
-import { ProductItemModel } from "models";
+import { ProductItemModel, CouponModel } from "models";
 import { RootState } from "reducers";
+import { getTotalPrice } from "lib/calc";
 
 interface CartItem {
-  product: ProductItemModel;
   checked: boolean;
   quantity: number;
+  product: ProductItemModel;
 }
 type CartItems = Record<ProductItemModel["id"], CartItem>;
+interface CartCoupon {
+  checked: boolean;
+  coupon: CouponModel;
+}
+type CartCoupons = Record<CouponModel["id"], CartCoupon>;
 interface Cart {
-  cartItems: CartItems;
   cartItemsNum: number;
+  cartItems: CartItems;
+  cartCoupons: CartCoupons;
+  totalPrice: number;
 }
 export const cartSelector = () => ({
+  coupons: { coupons },
   productItems: { items },
-  cart: { cartItemsState, cartItemsNum }
+  cart: { cartItemsNum, cartItemsState, cartCouponsState }
 }: RootState): Cart => {
   const cartItems: CartItems = {};
+  const checkedProducts: {
+    quantity: number;
+    product: ProductItemModel;
+  }[] = [];
   for (let id in cartItemsState) {
-    cartItems[id] = {
-      product: items[id],
-      checked: cartItemsState[id].checked,
-      quantity: cartItemsState[id].quantity
-    };
+    const product = items[id];
+    const { checked, quantity } = cartItemsState[id];
+    cartItems[id] = { checked, quantity, product };
+    if (checked) {
+      checkedProducts.push({ quantity, product });
+    }
   }
+
+  const cartCoupons: CartCoupons = {};
+  const checkedCoupons: CouponModel[] = [];
+  for (let id in coupons) {
+    const coupon = coupons[id];
+    const checked = cartCouponsState[id] && cartCouponsState[id].checked;
+    cartCoupons[id] = { checked, coupon };
+    if (checked) {
+      checkedCoupons.push(coupon);
+    }
+  }
+
   return {
+    cartItemsNum,
     cartItems,
-    cartItemsNum
+    cartCoupons,
+    totalPrice: getTotalPrice(checkedProducts, checkedCoupons)
   };
 };

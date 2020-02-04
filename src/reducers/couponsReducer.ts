@@ -1,16 +1,17 @@
 import { getType } from "typesafe-actions";
+import keyBy from "lodash/keyBy";
 import { CouponModel } from "models";
 import { Actions, authLogout, fetchCouponsAsync } from "actions";
 
 export interface CouponsState {
   isLoading: boolean;
   errMsg: string;
-  coupons: CouponModel[];
+  coupons: Record<CouponModel["id"], CouponModel>;
 }
 export const couponsInitialState: CouponsState = {
   isLoading: false,
   errMsg: "",
-  coupons: []
+  coupons: {}
 };
 export const couponsReducer = (
   couponsState = couponsInitialState,
@@ -29,7 +30,7 @@ export const couponsReducer = (
         ...couponsState,
         isLoading: false,
         errMsg: "",
-        coupons: action.payload
+        coupons: keyBy(action.payload, "id")
       };
     case getType(fetchCouponsAsync.failure):
       return {

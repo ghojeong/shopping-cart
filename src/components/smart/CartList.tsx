@@ -4,13 +4,15 @@ import { removeItemFromCart, addQuantity, subQuantity } from "actions";
 import { ProductItemModel } from "models";
 import { CartListItem } from "components";
 
-interface Item {
-  product: ProductItemModel;
-  checked: boolean;
-  quantity: number;
-}
 interface Props {
-  items: Record<ProductItemModel["id"], Item>;
+  items: Record<
+    ProductItemModel["id"],
+    {
+      checked: boolean;
+      quantity: number;
+      product: ProductItemModel;
+    }
+  >;
 }
 export const CartList: FC<Props> = ({ items }) => {
   const dispatch = useDispatch();
