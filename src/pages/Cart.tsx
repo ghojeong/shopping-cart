@@ -1,12 +1,21 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCouponsAsync, checkAllItems, uncheckAllCoupons } from "actions";
-import { cartSelector } from "selectors";
-import { CartTotal, CartList } from "components";
+import { couponsSelector, cartSelector } from "selectors";
+import {
+  CartList,
+  CouponList,
+  Spinner,
+  SubmitButton,
+  TotalPrice
+} from "components";
 
 export const Cart = () => {
   const dispatch = useDispatch();
-  const { cartItems, cartItemsNum } = useSelector(cartSelector());
+  const { isLoading } = useSelector(couponsSelector());
+  const { cartItemsNum, cartItems, cartCoupons, totalPrice } = useSelector(
+    cartSelector()
+  );
 
   useEffect(() => {
     dispatch(fetchCouponsAsync.request());
@@ -24,7 +33,19 @@ export const Cart = () => {
           <p>장바구니에 담긴 상품이 없습니다.</p>
         )}
       </div>
-      <CartTotal />
+      <div className="container">
+        <div className="row">
+          <div className="card p-3 w-100">
+            {isLoading ? <Spinner /> : <CouponList coupons={cartCoupons} />}
+            <TotalPrice totalPrice={totalPrice} />
+          </div>
+        </div>
+        <div className="submit my-3 ">
+          <SubmitButton disabled={isLoading || totalPrice <= 0}>
+            주문
+          </SubmitButton>
+        </div>
+      </div>
     </div>
   );
 };
