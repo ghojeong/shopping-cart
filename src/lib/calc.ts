@@ -44,9 +44,11 @@ export const getTotalPrice = (
 
   const discountRates: number[] = [];
   for (const { discountRate, discountAmount } of coupons) {
-    couponAvailableTotalPrice -= discountAmount || 0;
-    if (couponAvailableTotalPrice <= 0) {
-      return couponUnavailableTotalPrice;
+    if (discountAmount && discountAmount > 0) {
+      couponAvailableTotalPrice -= discountAmount;
+      if (couponAvailableTotalPrice <= 0) {
+        return couponUnavailableTotalPrice;
+      }
     }
     if (discountRate && discountRate > 0 && discountRate < 100) {
       discountRates.push(discountRate);
