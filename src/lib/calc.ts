@@ -22,18 +22,13 @@ export const getTotalPrice = (
 
   let couponAvailableTotalPrice = 0;
   let couponUnavailableTotalPrice = 0;
-  for (const productWithQuantity of products) {
-    if (productWithQuantity.product.availableCoupon === false) {
-      const {
-        quantity,
-        product: { price }
-      } = productWithQuantity;
+  for (const {
+    quantity,
+    product: { price, availableCoupon }
+  } of products) {
+    if (availableCoupon === false) {
       couponUnavailableTotalPrice += quantity * price;
     } else {
-      const {
-        quantity,
-        product: { price }
-      } = productWithQuantity;
       couponAvailableTotalPrice += quantity * price;
     }
   }
