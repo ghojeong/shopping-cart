@@ -7,7 +7,7 @@ export const getTotalPrice = (
   }[],
   coupons?: CouponModel[]
 ): number => {
-  if (products.length < 0) {
+  if (products.length < 1) {
     return 0;
   }
 
