@@ -1,10 +1,11 @@
 import { ProductItemModel, CouponModel } from "models";
 
+interface ProductWithQuantity {
+  quantity: number;
+  product: ProductItemModel;
+}
 export const getTotalPrice = (
-  products: {
-    quantity: number;
-    product: ProductItemModel;
-  }[],
+  products: ProductWithQuantity[],
   coupons?: CouponModel[]
 ): number => {
   if (products.length < 1) {
@@ -19,33 +20,48 @@ export const getTotalPrice = (
     );
   }
 
-  let hasCouponAvailableItem = false;
+  const couponAvailableProducts: ProductWithQuantity[] = [];
+  const couponUnavailableProducts: ProductWithQuantity[] = [];
 
-  const totalPrice = products.reduce((accTotalPrice, { quantity, product }) => {
-    const { price, availableCoupon } = product;
-
-    if (quantity > 0 && !(availableCoupon === false)) {
-      hasCouponAvailableItem = true;
+  for (const productWithQuantity of products) {
+    if (productWithQuantity.product.availableCoupon === false) {
+      couponUnavailableProducts.push(productWithQuantity);
+    } else {
+      couponAvailableProducts.push(productWithQuantity);
     }
+  }
 
-    const discountedPrice = coupons.reduce(
-      (accDiscountedPrice, { discountRate }) =>
-        discountRate &&
-        discountRate > 0 &&
-        discountRate < 100 &&
-        !(availableCoupon === false)
-          ? accDiscountedPrice - price * discountRate * 0.01
-          : accDiscountedPrice,
-      price
-    );
-    return accTotalPrice + quantity * discountedPrice;
-  }, 0);
-
-  const totalDiscountAmount = coupons.reduce(
-    (accDiscountAmount, { discountAmount }) =>
-      accDiscountAmount + (discountAmount || 0),
+  const couponUnavailableTotalPrice = couponUnavailableProducts.reduce(
+    (accTotalPrice, { quantity, product: { price } }) =>
+      accTotalPrice + quantity * price,
     0
   );
 
-  return hasCouponAvailableItem ? totalPrice - totalDiscountAmount : totalPrice;
+  if (couponAvailableProducts.length < 1) {
+    return couponUnavailableTotalPrice;
+  }
+
+  const couponAvailableTotalPrice = couponAvailableProducts.reduce(
+    (accTotalPrice, { quantity, product: { price } }) =>
+      accTotalPrice + quantity * price,
+    0
+  );
+
+  const totalDiscount = coupons.reduce(
+    (accDiscount, { discountRate, discountAmount }) => {
+      if (discountAmount) {
+        accDiscount += discountAmount;
+      }
+      if (discountRate && discountRate > 0 && discountRate < 100) {
+        accDiscount += couponAvailableTotalPrice * discountRate * 0.01;
+      }
+      return accDiscount;
+    },
+    0
+  );
+
+  const totalPrice =
+    couponUnavailableTotalPrice + couponAvailableTotalPrice - totalDiscount;
+
+  return totalPrice > 0 ? totalPrice : 0;
 };

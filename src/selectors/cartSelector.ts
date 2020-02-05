@@ -33,7 +33,7 @@ export const cartSelector = () => ({
     const product = items[id];
     const { checked, quantity } = cartItemsState[id];
     cartItems[id] = { checked, quantity, product };
-    if (checked) {
+    if (checked && quantity > 0) {
       checkedProducts.push({ quantity, product });
     }
   }
