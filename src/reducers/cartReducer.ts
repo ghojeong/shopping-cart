@@ -49,7 +49,6 @@ export const cartReducer = (
           ...cartState.cartItemsState,
           [action.payload.id]: {
             ...cartState.cartItemsState[action.payload.id],
-            checked: true,
             quantity: hasAddedItem(action.payload.id, cartState)
               ? cartState.cartItemsState[action.payload.id].quantity + 1
               : 1
@@ -66,7 +65,6 @@ export const cartReducer = (
           ...cartState.cartItemsState,
           [action.payload.id]: {
             ...cartState.cartItemsState[action.payload.id],
-            checked: true,
             quantity: 0
           }
         },
@@ -81,7 +79,6 @@ export const cartReducer = (
           ...cartState.cartItemsState,
           [action.payload.id]: {
             ...cartState.cartItemsState[action.payload.id],
-            checked: true,
             quantity: hasAddedItem(action.payload.id, cartState)
               ? cartState.cartItemsState[action.payload.id].quantity + 1
               : 1
@@ -98,7 +95,6 @@ export const cartReducer = (
           ...cartState.cartItemsState,
           [action.payload.id]: {
             ...cartState.cartItemsState[action.payload.id],
-            checked: true,
             quantity: hasAddedItem(action.payload.id, cartState)
               ? cartState.cartItemsState[action.payload.id].quantity - 1
               : 0
