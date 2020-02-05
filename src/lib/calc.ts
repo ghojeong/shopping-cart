@@ -55,7 +55,8 @@ export const getTotalPrice = (
     }
   }
 
-  for (const discountRate of discountRates.sort((num1, num2) => num1 - num2)) {
+  const sortedDiscountRates = discountRates.sort((num1, num2) => num1 - num2);
+  for (const discountRate of sortedDiscountRates) {
     couponAvailableTotalPrice -=
       couponAvailableTotalPrice * discountRate * 0.01;
   }
