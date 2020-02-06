@@ -7,9 +7,9 @@ interface ProductWithQuantity {
 
 /**
  * TODO:
- * getTotalPrice 함수의 로직은 백엔드와 프론트엔드가 동일할 수 있도록 해야한다.
- * 프론트 엔드의 lib 에서 getTotalPrice 함수를 정의하는게 아니라,
- * npmrc 등을 통해 회사 서버에서 정의된 공통 모듈을 다운받아 사용하도록 해야한다.
+ * getTotalPrice 함수의 로직은 백엔드와 프론트엔드가 동일하도록 해야한다.
+ * 프론트엔드의 lib 에서 getTotalPrice 함수를 정의하는게 아니라,
+ * npmrc 등을 통해 회사 서버에 정의된 공통 모듈을 설치해 사용해야한다.
  */
 export const getTotalPrice = (
   products: ProductWithQuantity[],
