@@ -19,7 +19,7 @@ import {
 } from "actions";
 
 export interface CartState {
-  cartItemsNum: number; // 장바구니에 담긴 상품 종류의 숫자 (총개수가 아님)
+  cartItemsNum: number; // NOTE: 장바구니에 담긴 상품 종류의 숫자 (총개수가 아님)
   cartItemsState: Record<
     ProductItemModel["id"],
     { checked: boolean; quantity: number }
