@@ -41,7 +41,7 @@ E-commerce website with shopping-cart
 - lib
   - 나중에 모듈로 분리할 필요가 있는 로직을 정리한 디렉토리
 - models
-  - 공통적으로 사용되는 데이터 모델들을 정의해 놓은 디렉토리
+  - DTO에 사용되는 데이터 모델들을 정의해 놓은 디렉토리
   - 지금은 interface 로 정의되어 있지만, instance 를 직접 만들고 수정할 필요가 있을 경우 class 로 만들 수도 있다.
 - pages
   - 웹 페이지를 모아놓은 디렉토리
