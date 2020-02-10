@@ -57,4 +57,4 @@ E-commerce website with shopping-cart
   - store 에서 데이터를 가져오는 [selector](https://react-redux.js.org/next/api/hooks#useselector) 를 정의한 디렉토리
   - react-redux 라이브러리의 useSelector 훅을 사용하기 위한 selector 함수들을 모아놓은 디렉토리이다.
 - services
-  - [MVC 패턴의 service](https://pjh3749.tistory.com/89)
+  - [MVC 패턴의 service](https://pjh3749.tistory.com/89)들을 모아놓은 디렉토리
