@@ -14,8 +14,7 @@ E-commerce website with shopping-cart
 
 ## 설계
 
-[redux-observable](https://redux-observable.js.org/)을 통해<br>
-[React + Redux + RxJS](https://youtu.be/AslncyG8whg) 활용
+[redux-observable](https://redux-observable.js.org/)을 통해 [React + Redux + RxJS](https://youtu.be/AslncyG8whg) 활용
 
 ## Directory Structure
 
