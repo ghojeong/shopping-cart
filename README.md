@@ -12,6 +12,11 @@ E-commerce website with shopping-cart
 
 `npm start`
 
+## 설계
+
+[redux-observable](https://redux-observable.js.org/)을 통해<br>
+[React + Redux + RxJS](https://youtu.be/AslncyG8whg) 활용
+
 ## Directory Structure
 
 ```
